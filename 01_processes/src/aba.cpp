@@ -11,15 +11,16 @@ using namespace std;
 
 int main(int argc, char const* argv[]) {
   auto pid{fork()};
+  chrono::milliseconds sleeptime(500);
 
   while (true) {
     if (pid == 0) {
       cout << "A" << endl;
-      sleep(1);
+      this_thread::sleep_for(sleeptime);
     }
     else {
       cout << "B" << endl;
-      sleep(1);
+      this_thread::sleep_for(sleeptime);
     }
   }
 }
