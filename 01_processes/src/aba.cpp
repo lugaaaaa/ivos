@@ -17,18 +17,20 @@ int main(int argc, char const* argv[]) {
 
   if (pid == 0) {
     execl("./charout", "charout", "A", nullptr);
-    this_thread::sleep_for(sleeptime);
-  }
-    else if (pid > 0){
-      while (cnt < 6) {
-        //execl("./charout", "charout", "B", nullptr);
-        cout << "B" << flush;
-        this_thread::sleep_for(sleeptime);
-        cnt++;
+  } else if (pid > 0) {
+      auto pid2{fork()};
+      if (pid2 == 0){
+        execl("./charout", "charout", "B", nullptr);
+      }else if (pid2 > 0) {
+        while (cnt < 6) {
+          this_thread::sleep_for(sleeptime);
+          cnt++;
+        }
+        kill(pid, SIGKILL);
+        kill(pid2, SIGKILL);
+        waitpid(pid, &status, 0);
+        waitpid(pid2, &status, 0);
       }
-      kill(pid, SIGKILL);
-    }
+  }
 
-
-    waitpid(pid, &status, 0);
 }
