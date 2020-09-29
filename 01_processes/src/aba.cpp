@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <thread>
 #include <chrono>
-#include <signal.h>
+#include <csignal>
 #include <sys/wait.h>
 #include <cerrno>
 
@@ -12,15 +12,20 @@ using namespace std;
 int main(int argc, char const* argv[]) {
   auto pid{fork()};
   chrono::milliseconds sleeptime(500);
+  int cnt{0};
 
-  while (true) {
-    if (pid == 0) {
+  if (pid == 0) {
+    while (cnt < 6) {
       cout << "A" << endl;
       this_thread::sleep_for(sleeptime);
     }
-    else {
-      cout << "B" << endl;
-      this_thread::sleep_for(sleeptime);
-    }
   }
+    else {
+      while (cnt < 6) {
+        cout << "B" << endl;
+        this_thread::sleep_for(sleeptime);
+        cnt++;
+      }
+    }
+  kill(pid, SIGKILL);
 }
