@@ -13,6 +13,7 @@ int main(int argc, char const* argv[]) {
   auto pid{fork()};
   chrono::milliseconds sleeptime(500);
   int cnt{0};
+  int status;
 
   if (pid == 0) {
     while (cnt < 6) {
@@ -27,5 +28,7 @@ int main(int argc, char const* argv[]) {
         cnt++;
       }
     }
-  kill(pid, SIGKILL);
+
+    kill(pid, SIGKILL);
+    waitpid(pid, &status, 0);
 }
