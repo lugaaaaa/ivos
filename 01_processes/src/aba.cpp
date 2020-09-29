@@ -16,19 +16,19 @@ int main(int argc, char const* argv[]) {
   int status;
 
   if (pid == 0) {
-    while (cnt < 6) {
-      cout << "A" << endl;
-      this_thread::sleep_for(sleeptime);
-    }
+    execl("./charout", "charout", "A", nullptr);
+    this_thread::sleep_for(sleeptime);
   }
-    else {
+    else if (pid > 0){
       while (cnt < 6) {
-        cout << "B" << endl;
+        //execl("./charout", "charout", "B", nullptr);
+        cout << "B" << flush;
         this_thread::sleep_for(sleeptime);
         cnt++;
       }
+      kill(pid, SIGKILL);
     }
 
-    kill(pid, SIGKILL);
+
     waitpid(pid, &status, 0);
 }
