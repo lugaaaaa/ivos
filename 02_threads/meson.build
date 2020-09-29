@@ -1,2 +1,4 @@
 project('02_threads', 'cpp')
-executable('car', 'src/cars.cpp')
+thread_dep = dependency('threads')
+executable('car', 'src/cars.cpp',
+dependencies : thread_dep)

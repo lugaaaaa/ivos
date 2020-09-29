@@ -15,7 +15,7 @@ void golf_mk2() {
 }
 
 int main(int argc, char const *argv[]) {
-  golf_mk2();
-
+  thread t1{golf_mk2};
+  t1.join();
   return 0;
 }
