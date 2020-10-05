@@ -33,15 +33,13 @@ class Car {
 };
 
 int main(int argc, char const *argv[]) {
-  /*thread t1{golf_mk2};
-  t1.join();
-
-  car Car("Lada");
-  thread t2{Car};*/
-
+  thread t1{golf_mk2};
+  
   Car mercl("C63S Coupe");
-  thread t1{ref(mercl)};
+  thread t2{ref(mercl)};
+
   t1.join();
+  t2.join();
 
   return 0;
 }
