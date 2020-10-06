@@ -4,6 +4,8 @@
 #include <thread>
 #include <signal.h>
 #include <random>
+#include <iomanip>
+#include <sstream>
 
 using namespace std;
 using namespace chrono;
@@ -14,10 +16,13 @@ void golf_mk2() {
   std::mt19937 gen{rd()};
   std::uniform_real_distribution<> dis{1, 10};
   double lap_time;
+  ostringstream buf;
 
   while (true) {
     lap_time = dis(gen);
-    cout << "Runde" << to_string(cnt) << ": golf mk2" << "\n" << flush;
+    buf << "Runde" << to_string(cnt) << ": golf mk2" << ": " << setprecision(3) << lap_time << "\n" << flush;
+    cout << buf.str();
+    buf.str("");
     this_thread::sleep_for(milliseconds(static_cast<int>(lap_time*1000)));
     cnt++;
   }
@@ -37,7 +42,7 @@ class Car {
 
       while (true) {
         lap_time = dis(gen);
-        cout << "Runde" << to_string(cnt) << ": " << this->carname << "\n" << flush;
+        cout << "Runde" << to_string(cnt) << ": " << this->carname << ": " << setprecision(3) << lap_time << "\n" << flush;
         this_thread::sleep_for(milliseconds(static_cast<int>(lap_time*1000)));
         cnt++;
       }

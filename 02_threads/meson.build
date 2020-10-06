@@ -1,4 +1,4 @@
 project('02_threads', 'cpp')
 thread_dep = dependency('threads')
-executable('car', 'src/cars.cpp',
+executable('contest', 'src/cars.cpp',
 dependencies : thread_dep)
