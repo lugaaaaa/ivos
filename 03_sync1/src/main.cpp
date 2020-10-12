@@ -13,6 +13,26 @@ int main() {
   cout << test.get_balance() << endl;
   */
 
+  /* Punkt 2
+  Account test{Account()};
+  test.deposit(1);
+
+  thread t1{[&](){
+    cout << "Thread 1" << endl;
+    cout << test.withdraw(1) << endl;
+  }};
+
+  thread t2{[&](){
+    cout << "Thread 2" << endl;
+    cout << test.withdraw(1) << endl;
+  }};
+
+  t1.join();
+  t2.join();
+
+  cout << test.get_balance() << endl;
+  */
+
 
   Account test{Account()};
   test.deposit(1);
@@ -20,17 +40,18 @@ int main() {
   thread t1{[&](){
     cout << "Thread 1" << endl;
     cout << test.withdraw(1) << endl;
-    cout << test.get_balance() << endl;
   }};
 
   thread t2{[&](){
     cout << "Thread 2" << endl;
     cout << test.withdraw(1) << endl;
-    cout << test.get_balance() << endl;
   }};
 
   t1.join();
   t2.join();
+
+  cout << test.get_balance() << endl;
+  
 
 
   return 0;
