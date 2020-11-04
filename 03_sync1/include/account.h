@@ -18,8 +18,9 @@ class Account {
 class Depositer{
     private:
         Account& acc;
+        int deposits;
     public:
-        Depositer(Account& a) : acc(a){}
+      Depositer(Account& a, int d) : acc(a), deposits(d){}
 
         void operator()(){
             for(int i = 0; i < 5; i++){

@@ -1,10 +1,22 @@
 #include <iostream>
 #include <thread>
 #include "account.h"
+#include "include/CLI11.hpp"
 
 using namespace std;
 
-int main() {
+int main(int argc, char* const argv[]) {
+
+  CLI::App app("Account app");
+      int balance{0};
+
+      app.add_option("balance", balance, "Initial balance")->required();
+      int deposits{5};
+      app.add_option("-d,--deposits", deposits, "Count of deposits", true);
+
+      CLI11_PARSE(app, argc, argv);
+
+  cout << balance << endl;
 
   /* Punkt 1
   Account test{Account()};
@@ -67,7 +79,7 @@ int main() {
   cout << test.get_balance() << endl;
   */
 
-  
+
 
 
   return 0;
