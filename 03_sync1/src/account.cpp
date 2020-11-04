@@ -10,11 +10,13 @@ int Account::get_balance() {
 }
 
 void Account::deposit(int amount) {
+  unique_lock <mutex> lock{mtx};
+
   balance += amount;
 }
 
 bool Account::withdraw(int amount) {
-  lock_guard <mutex> lock {mtx};
+  lock_guard <mutex> lock{mtx};
 
   if (balance - amount < 0) {
     return false;
