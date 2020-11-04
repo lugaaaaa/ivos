@@ -55,7 +55,18 @@ int main() {
   cout << test.get_balance() << endl;
   */
 
-  
+  /* Punkt 6
+  Account test{0};
+  Depositer dep{test};
+  thread t1{ref(dep)};
+  thread t2{ref(dep)};
+
+  t1.join();
+  t2.join();
+
+  cout << test.get_balance() << endl;
+  */
+
 
   return 0;
 }
