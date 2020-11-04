@@ -13,6 +13,7 @@ int main() {
   cout << test.get_balance() << endl;
   */
 
+
   /* Punkt 2
   Account test{Account()};
   test.deposit(1);
@@ -34,6 +35,7 @@ int main() {
   */
 
 
+  /* Punkt 3
   Account test{Account()};
   test.deposit(1);
 
@@ -51,8 +53,9 @@ int main() {
   t2.join();
 
   cout << test.get_balance() << endl;
-  
+  */
 
+  
 
   return 0;
 }

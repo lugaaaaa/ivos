@@ -1,5 +1,6 @@
 #include <iostream>
 #include <thread>
+#include <mutex>
 #include "account.h"
 
 using namespace std;
@@ -13,6 +14,8 @@ void Account::deposit(int amount) {
 }
 
 bool Account::withdraw(int amount) {
+  lock_guard <mutex> lock {mtx};
+
   if (balance - amount < 0) {
     return false;
   } else if (balance - amount >= 0) {
