@@ -3,7 +3,7 @@
 #include <iostream>
 #include <queue>
 #include <mutex>
-#include "work_packt.h"
+#include "work_packet.h"
 #include <condition_variable>
 
 class WorkQueue {
@@ -13,5 +13,5 @@ class WorkQueue {
     public:
       WorkPacket pop();
       void push(WorkPacket WorkPacket);
-      
+
 };

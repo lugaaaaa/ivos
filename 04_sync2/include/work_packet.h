@@ -7,5 +7,5 @@ class WorkPacket {
         WorkPacket(int id):id(id){};
         const int getId(){
           return this->id;
-        };
-}
+        }
+};
