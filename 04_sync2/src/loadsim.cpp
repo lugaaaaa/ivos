@@ -25,7 +25,8 @@ void worker (int id, WorkQueue& q) {
 }
 
 int main(int argc, char const *argv[]) {
-  WorkQueue WorkQueue{};
+
+  WorkQueue WorkQueue{5};
   int i{1};
   thread t1([&](){worker(1, WorkQueue);});
   thread t2([&](){worker(2, WorkQueue);});
