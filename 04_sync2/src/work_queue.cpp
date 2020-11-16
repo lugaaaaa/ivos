@@ -9,12 +9,12 @@ using namespace std;
 
 WorkPacket WorkQueue::pop() {
   lock_guard<mutex> lock{mtx};
-  WorkPacket WorkPacket{this->packets.front()};
-  this->packets.pop();
+  WorkPacket WorkPacket{this->WorkPackets.front()};
+  this->WorkPackets.pop();
   return WorkPacket;
 }
 
 void WorkQueue::push(WorkPacket WorkPacket) {
   lock_guard<mutex> lock{mtx};
-  this->packets.push(WorkPacket);
+  this->WorkPackets.push(WorkPacket);
 }
