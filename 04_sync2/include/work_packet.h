@@ -1,5 +1,4 @@
-#ifndef ACCOUNT_H
-#define ACCOUNT_H
+#pragma once
 
 class WorkPacket {
     private:
@@ -9,7 +8,4 @@ class WorkPacket {
         const int getId(){
           return this->id;
         };
-
 }
-
-#endif
