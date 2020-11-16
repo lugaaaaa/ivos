@@ -8,7 +8,8 @@
 using namespace std;
 
 WorkPacket WorkQueue::pop() {
-  lock_guard<mutex> lock{mtx};
+  unique_lock<mutex> lock{mtx};
+  not_empty.wait(lock, [this]{return WorkPackets.size();});
   WorkPacket WorkPacket{this->WorkPackets.front()};
   this->WorkPackets.pop();
   return WorkPacket;
@@ -17,4 +18,5 @@ WorkPacket WorkQueue::pop() {
 void WorkQueue::push(WorkPacket WorkPacket) {
   lock_guard<mutex> lock{mtx};
   this->WorkPackets.push(WorkPacket);
+  not_empty.notify_one();
 }

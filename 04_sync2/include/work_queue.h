@@ -10,6 +10,9 @@ class WorkQueue {
     private:
       std::queue<WorkPacket> WorkPackets{};
       std::mutex mtx;
+      std::condition_variable not_empty;
+      std::condition_variable is_full;
+
     public:
       WorkPacket pop();
       void push(WorkPacket WorkPacket);
