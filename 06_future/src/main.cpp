@@ -36,16 +36,23 @@ int main(int argc, char const *argv[]) {
 
   bool async{false};
   app.add_flag("-a, --async", async, "async");
-  
+
   CLI11_PARSE(app, argc, argv);
 
   try{
         app.parse(argc, argv);
         vector<InfInt> newList;
-        for(size_t i = 0; i<list.size(); i++){
+        for(size_t i = 0; i < list.size(); i++){
           InfInt list_item = list[i];
           newList.push_back(list_item);
-          cout << list_item << "\n" << flush;
+        }
+        for(size_t i = 0; i < newList.size(); i++){
+          vector<InfInt> factors = get_factors(newList[i]);
+          cout << newList[i] << ": " << flush;
+          for(size_t j = 0; j < factors.size(); j++){
+            cout << factors[j] << " " << flush;
+          }
+          cout << "\n" << flush;
         }
 
     }catch (const CLI::ParseError &e) {
