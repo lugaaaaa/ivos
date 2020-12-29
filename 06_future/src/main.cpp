@@ -96,14 +96,19 @@ int main(int argc, char const *argv[]) {
             cout << "\n" << flush;
         }
         */
+        auto start = chrono::system_clock::now();
+        for(size_t i = 0; i<result.size();i++){
+          result[i].wait();
+        }
 
+        auto duration = chrono::duration_cast<chrono::milliseconds>(std::chrono::system_clock::now() - start);
         thread t1([&](){print(newList, result);});
         thread t2([&](){checkFactors(newList, result);});
         t1.join();
         t2.join();
+        cout << "Time elapsed used for factoring: " << duration.count() << "ms" << "\n";
 
     }catch (const CLI::ParseError &e) {
         return app.exit(e);
     }
-
 }
