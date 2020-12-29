@@ -27,6 +27,17 @@ string check(const string& s){
     }
 }
 
+void print(vector<InfInt> &numbers, vector<future<vector<InfInt>>> &result){
+  for(size_t i = 0; i < result.size(); i++){
+      cout << numbers[i] << ": "<< flush;
+      vector<InfInt> results = result[i].get();
+      for(size_t j = 0; j < results.size(); j++){
+          cout << results[j] <<" "<< flush;
+      }
+      cout << "\n" << flush;
+  }
+}
+
 int main(int argc, char const *argv[]) {
   CLI::App app("Factor numbers");
   vector<string> list;
@@ -47,17 +58,21 @@ int main(int argc, char const *argv[]) {
           InfInt list_item = list[i];
           newList.push_back(list_item);
         }
+
+
         for(size_t i = 0; i < newList.size(); i++){
           /*vector<InfInt> factors = get_factors(newList[i]);
           cout << newList[i] << ": " << flush;
           for(size_t j = 0; j < factors.size(); j++){
             cout << factors[j] << " " << flush;
           }
-          cout << "\n" << flush;*/
-
+          cout << "\n" << flush;
+          */  
           result.push_back(async(get_factors, newList[i]));
         }
 
+
+        /*
         for(size_t i = 0; i < result.size(); i++){
             cout << newList[i] << ": "<< flush;
             vector<InfInt> results = result[i].get();
@@ -66,7 +81,10 @@ int main(int argc, char const *argv[]) {
             }
             cout << "\n" << flush;
         }
+        */
 
+        thread t1([&](){print(newList, result);});
+        t1.join();
 
     }catch (const CLI::ParseError &e) {
         return app.exit(e);
