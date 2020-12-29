@@ -34,26 +34,39 @@ int main(int argc, char const *argv[]) {
     ->required()
     ->check(check);
 
-  bool async{false};
-  app.add_flag("-a, --async", async, "async");
+  bool async_option{false};
+  app.add_flag("-a, --async", async_option, "async");
 
   CLI11_PARSE(app, argc, argv);
 
   try{
         app.parse(argc, argv);
         vector<InfInt> newList;
+        vector<future<vector<InfInt>>> result;
         for(size_t i = 0; i < list.size(); i++){
           InfInt list_item = list[i];
           newList.push_back(list_item);
         }
         for(size_t i = 0; i < newList.size(); i++){
-          vector<InfInt> factors = get_factors(newList[i]);
+          /*vector<InfInt> factors = get_factors(newList[i]);
           cout << newList[i] << ": " << flush;
           for(size_t j = 0; j < factors.size(); j++){
             cout << factors[j] << " " << flush;
           }
-          cout << "\n" << flush;
+          cout << "\n" << flush;*/
+
+          result.push_back(async(get_factors, newList[i]));
         }
+
+        for(size_t i = 0; i < result.size(); i++){
+            cout << newList[i] << ": "<< flush;
+            vector<InfInt> results = result[i].get();
+            for(size_t j = 0; j < results.size(); j++){
+                cout << results[j] <<" "<< flush;
+            }
+            cout << "\n" << flush;
+        }
+
 
     }catch (const CLI::ParseError &e) {
         return app.exit(e);
