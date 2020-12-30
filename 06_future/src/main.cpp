@@ -73,40 +73,38 @@ int main(int argc, char const *argv[]) {
           newList.push_back(list_item);
         }
 
-
-        for(size_t i = 0; i < newList.size(); i++){
-          /*vector<InfInt> factors = get_factors(newList[i]);
-          cout << newList[i] << ": " << flush;
-          for(size_t j = 0; j < factors.size(); j++){
-            cout << factors[j] << " " << flush;
+        if(async_option == false){
+          for(size_t i = 0; i < newList.size(); i++){
+            result.push_back(async(launch::deferred, get_factors, newList[i]));
           }
-          cout << "\n" << flush;
-          */
-          result.push_back(async(launch::deferred, get_factors, newList[i]));
-        }
+          auto start = chrono::system_clock::now();
+          for(size_t i = 0; i<result.size();i++){
+            result[i].wait();
+          }
 
-
-        /*
-        for(size_t i = 0; i < result.size(); i++){
-            cout << newList[i] << ": "<< flush;
-            vector<InfInt> results = result[i].get();
-            for(size_t j = 0; j < results.size(); j++){
-                cout << results[j] <<" "<< flush;
-            }
-            cout << "\n" << flush;
+          auto duration = chrono::duration_cast<chrono::milliseconds>(std::chrono::system_clock::now() - start);
+          thread t1([&](){print(newList, result);});
+          thread t2([&](){checkFactors(newList, result);});
+          t1.join();
+          t2.join();
+          cout << "Time elapsed used for factoring: " << duration.count() << "ms" << "\n";
         }
-        */
-        auto start = chrono::system_clock::now();
-        for(size_t i = 0; i<result.size();i++){
-          result[i].wait();
-        }
+        else if(async_option == true){
+          for(size_t i = 0; i < newList.size(); i++){
+            result.push_back(async(launch::async, get_factors, newList[i]));
+          }
+          auto start = chrono::system_clock::now();
+          for(size_t i = 0; i<result.size();i++){
+            result[i].wait();
+          }
 
-        auto duration = chrono::duration_cast<chrono::milliseconds>(std::chrono::system_clock::now() - start);
-        thread t1([&](){print(newList, result);});
-        thread t2([&](){checkFactors(newList, result);});
-        t1.join();
-        t2.join();
-        cout << "Time elapsed used for factoring: " << duration.count() << "ms" << "\n";
+          auto duration = chrono::duration_cast<chrono::milliseconds>(std::chrono::system_clock::now() - start);
+          thread t1([&](){print(newList, result);});
+          thread t2([&](){checkFactors(newList, result);});
+          t1.join();
+          t2.join();
+          cout << "Time elapsed used for factoring: " << duration.count() << "ms" << "\n";
+        }
 
     }catch (const CLI::ParseError &e) {
         return app.exit(e);
