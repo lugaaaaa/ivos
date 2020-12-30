@@ -3,9 +3,21 @@
 #include <chrono>
 #include <mutex>
 #include <thread>
+#include <vector>
 #include "philosopher.h"
 
 using namespace std;
+
+mutex out_mtx;
+
+void println(const vector<string>& v){
+  lock_guard<mutex> lg{out_mtx};
+  for (string s : v){
+    cout << s << " ";
+  }
+  cout << endl;
+}
+
 
 void Philosopher::operator()(){
 
