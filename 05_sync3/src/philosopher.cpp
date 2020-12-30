@@ -10,7 +10,7 @@ using namespace std;
 
 mutex out_mtx;
 
-void println(const vector<string>& v){
+void println(const initializer_list<string>& v){
   lock_guard<mutex> lg{out_mtx};
   for (string s : v){
     cout << s << " ";
