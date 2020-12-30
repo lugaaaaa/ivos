@@ -23,32 +23,36 @@ void println(const T& word, const Rest&... rest) {
 }
 
 
-void Philosopher::operator()(){
+void Philosopher::operator()(Semaphore* sem){
 
-  stringstream buf;
+  println("Philosopher ", id, " is thinking...");
+  this_thread::sleep_for(1s);
 
-  while(true) {
-    println("Philosopher ", id, " is thinking...");
-    this_thread::sleep_for(1s);
+  println("Philosopher ", id, " attempts to get left fork");
+  left_fork.lock();
+  this_thread::sleep_for(5s);
 
-    println("Philosopher ", id, " attempts to get left fork");
-    left_fork.lock();
-    this_thread::sleep_for(5s);
-
-    println("Philosopher ", id, " got left fork. Now he wants the right one...");
-
-    println("Philosopher ", id, " attempts to get right fork");
-    right_fork.lock();
-
-    println("Philosopher ", id, " got right fork. Now he is eating...");
-    this_thread::sleep_for(5s);
-
-    println("Philosopher ", id, " finished eating");
-
-    println("Philosopher ", id, " released left fork");
-    left_fork.unlock();
-
-    println("Philosopher ", id, " released right fork");
-    right_fork.unlock();
+  if(sem != nullptr) {
+    sem->acquire();
   }
+
+  println("Philosopher ", id, " got left fork. Now he wants the right one...");
+
+  println("Philosopher ", id, " attempts to get right fork");
+  right_fork.lock();
+
+  println("Philosopher ", id, " got right fork. Now he is eating...");
+  this_thread::sleep_for(5s);
+
+  println("Philosopher ", id, " finished eating");
+
+  if(sem != nullptr) {
+    sem->release();
+  }
+
+  println("Philosopher ", id, " released left fork");
+  left_fork.unlock();
+
+  println("Philosopher ", id, " released right fork");
+  right_fork.unlock();
 }
