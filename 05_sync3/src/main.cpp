@@ -8,6 +8,22 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
+    bool nodeadlock{false};
+    bool livelock{false};
+
+    CLI::App app("Dining philosophers simulation");
+    app.add_flag("-n, --nodeadlock", nodeadlock, "Prevent a deadlock at all");
+    app.add_flag("-l, --livelock", livelock, "Simulate a livelock");
+    CLI11_PARSE(app, argc, argv);
+
+    Semaphore* nodeadlock_pointer;
+
+    if (nodeadlock){
+        nodeadlock_pointer = new Semaphore();
+    }else {
+        nodeadlock_pointer = nullptr;
+    }
+
   mutex right_m;
   mutex left_m;
   Semaphore* sem = new Semaphore{4};
