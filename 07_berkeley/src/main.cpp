@@ -3,6 +3,7 @@
 #include <chrono>
 #include "clock.h"
 #include "timeutils.h"
+#include "pipe.h"
 
 using namespace std;
 
