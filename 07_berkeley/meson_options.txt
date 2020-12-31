@@ -1,0 +1,2 @@
+option('cli_include_dir', type : 'string', value : '/mnt/c/users/lukai/onedrive/documents/github/ivos',
+	description : 'the include dir of CLI11')
