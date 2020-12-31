@@ -22,8 +22,10 @@ class TimeSlave{
 
 int main(int argc, char const *argv[]) {
   //thread t1(Clock{"testclock"});
-  thread t2(TimeSlave{"testslave", 12, 30, 00});
+  thread slave1(TimeSlave{"slave1", 12, 30, 00});
+  thread slave2(TimeSlave{"slave2", 12, 30, 00});
 
   //t1.join();
-  t2.join();
+  slave1.join();
+  slave2.join();
 }
