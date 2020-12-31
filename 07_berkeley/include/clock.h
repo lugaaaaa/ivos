@@ -1,6 +1,7 @@
 #pragma once
 
 #include "timeutils.h"
+#include <tuple>
 
 class Clock{
   private:
@@ -10,8 +11,11 @@ class Clock{
     Clock(std::string _name): name{_name}{};
     Clock(std::string name_, int hours_, int minutes_, int seconds_) {
       name = name_;
-      curr_time = set_time(curr_time, hours_, minutes_, seconds_);
+      curr_time = clock_functions::set_time(curr_time, hours_, minutes_, seconds_);
     };
+
+    void set_time(int hours, int minutes, int seconds);
+    std::tuple<int, int, int> get_time();
 
     void  operator()();
 };
