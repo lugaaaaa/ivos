@@ -35,7 +35,11 @@ class TimeSlave{
     }
 
     void operator()(){
-      clock();
+      //clock();
+      long var;
+      while(channel.get_pipe1() >> var) {
+        println(var);
+      }
     };
 
     Channel* get_channel(){
@@ -55,7 +59,14 @@ class TimeMaster{
     }
 
     void operator()(){
-      clock();
+      //clock();
+      for(int i = 0; i < 3; i++) {
+        channel1->get_pipe1() << i;
+        channel2->get_pipe1() << i;
+      }
+      this_thread::sleep_for(500ms);
+      channel1->get_pipe1().close();
+      channel2->get_pipe1().close();
     };
 
     void set_Channel1(Channel* channel) {
@@ -72,6 +83,10 @@ int main(int argc, char const *argv[]) {
   TimeSlave slave1("slave1", 12, 30, 00);
   TimeSlave slave2("slave2", 12, 30, 00);
   TimeMaster master1("master1", 12, 30, 00);
+
+  master1.set_Channel1(slave1.get_channel());
+  master1.set_Channel2(slave2.get_channel());
+
 
   thread s1(ref(slave1));
   thread s2(ref(slave2));
