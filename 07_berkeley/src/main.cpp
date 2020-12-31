@@ -4,8 +4,11 @@
 #include "clock.h"
 #include "timeutils.h"
 #include "pipe.h"
+#include "println.h"
 
 using namespace std;
+
+recursive_mutex out_mtx;
 
 class Channel{
   private:

@@ -4,12 +4,13 @@
 #include <tuple>
 #include "clock.h"
 #include "timeutils.h"
+#include "println.h"
 
 using namespace std;
 
 void Clock::operator()(){
   while(true){
-    cout << name << ": " << curr_time << endl;
+    println(name, ": ", curr_time);
     this_thread::sleep_for(1s);
     curr_time += 1s;
   }
