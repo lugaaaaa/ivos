@@ -7,34 +7,6 @@
 
 using namespace std;
 
-class TimeSlave{
-  private:
-    string name;
-    Clock clock;
-  public:
-    TimeSlave(string name_, int hours_, int minutes_, int seconds_) : clock(name_ + "_clock", hours_, minutes_, seconds_){
-      name = name_;
-    }
-
-    void operator()(){
-      clock();
-    };
-};
-
-class TimeMaster{
-  private:
-    string name;
-    Clock clock;
-  public:
-    TimeMaster(string name_, int hours_, int minutes_, int seconds_) : clock(name_ + "_clock", hours_, minutes_, seconds_){
-      name = name_;
-    }
-
-    void operator()(){
-      clock();
-    };
-};
-
 class Channel{
   private:
     Pipe<long> p1;
@@ -49,14 +21,61 @@ class Channel{
     }
 };
 
+class TimeSlave{
+  private:
+    string name;
+    Clock clock;
+    Channel channel;
+  public:
+    TimeSlave(string name_, int hours_, int minutes_, int seconds_) : clock(name_ + "_clock", hours_, minutes_, seconds_){
+      name = name_;
+    }
+
+    void operator()(){
+      clock();
+    };
+
+    Channel* get_channel(){
+      return &channel;
+    }
+};
+
+class TimeMaster{
+  private:
+    string name;
+    Clock clock;
+    Channel* channel1;
+    Channel* channel2;
+  public:
+    TimeMaster(string name_, int hours_, int minutes_, int seconds_) : clock(name_ + "_clock", hours_, minutes_, seconds_){
+      name = name_;
+    }
+
+    void operator()(){
+      clock();
+    };
+
+    void set_Channel1(Channel* channel) {
+      channel1 = channel;
+    }
+
+    void set_Channel2(Channel* channel) {
+      channel2 = channel;
+    }
+};
+
 int main(int argc, char const *argv[]) {
   //thread t1(Clock{"testclock"});
-  thread slave1(TimeSlave{"slave1", 12, 30, 00});
-  thread slave2(TimeSlave{"slave2", 12, 30, 00});
-  thread master1(TimeMaster{"master1", 12, 30, 00});
+  TimeSlave slave1("slave1", 12, 30, 00);
+  TimeSlave slave2("slave2", 12, 30, 00);
+  TimeMaster master1("master1", 12, 30, 00);
+
+  thread s1(ref(slave1));
+  thread s2(ref(slave2));
+  thread m1(master1);
 
   //t1.join();
-  slave1.join();
-  slave2.join();
-  master1.join();
+  s1.join();
+  s2.join();
+  m1.join();
 }
