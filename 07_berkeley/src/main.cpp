@@ -20,12 +20,28 @@ class TimeSlave{
     };
 };
 
+class TimeMaster{
+  private:
+    string name;
+    Clock clock;
+  public:
+    TimeMaster(string name_, int hours_, int minutes_, int seconds_) : clock(name_ + "_clock", hours_, minutes_, seconds_){
+      name = name_;
+    }
+
+    void operator()(){
+      clock();
+    };
+};
+
 int main(int argc, char const *argv[]) {
   //thread t1(Clock{"testclock"});
   thread slave1(TimeSlave{"slave1", 12, 30, 00});
   thread slave2(TimeSlave{"slave2", 12, 30, 00});
+  thread master1(TimeMaster{"master1", 12, 30, 00});
 
   //t1.join();
   slave1.join();
   slave2.join();
+  master1.join();
 }
